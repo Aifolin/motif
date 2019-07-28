@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2019, The Monero Project
+// Copyright (c) 2014-2019, The Motif Project
 // 
 // All rights reserved.
 // 
@@ -86,8 +86,8 @@ using namespace epee;
 #include <boost/format.hpp>
 #include <openssl/sha.h>
 
-#undef MONERO_DEFAULT_LOG_CATEGORY
-#define MONERO_DEFAULT_LOG_CATEGORY "util"
+#undef MOTIF_DEFAULT_LOG_CATEGORY
+#define MOTIF_DEFAULT_LOG_CATEGORY "util"
 
 namespace
 {
@@ -675,10 +675,10 @@ std::string get_nix_version_display_string()
   {
     ub_ctx *ctx = ub_ctx_create();
     if (!ctx) return false; // cheat a bit, should not happen unless OOM
-    char *monero = strdup("monero"), *unbound = strdup("unbound");
-    ub_ctx_zone_add(ctx, monero, unbound); // this calls ub_ctx_finalize first, then errors out with UB_SYNTAX
+    char *motif = strdup("motif"), *unbound = strdup("unbound");
+    ub_ctx_zone_add(ctx, motif, unbound); // this calls ub_ctx_finalize first, then errors out with UB_SYNTAX
     free(unbound);
-    free(monero);
+    free(motif);
     // if no threads, bails out early with UB_NOERROR, otherwise fails with UB_AFTERFINAL id already finalized
     bool with_threads = ub_ctx_async(ctx, 1) != 0; // UB_AFTERFINAL is not defined in public headers, check any error
     ub_ctx_delete(ctx);
@@ -1071,7 +1071,7 @@ std::string get_nix_version_display_string()
   std::string get_human_readable_bytes(uint64_t bytes)
   {
     // Use 1024 for "kilo", 1024*1024 for "mega" and so on instead of the more modern and standard-conforming
-    // 1000, 1000*1000 and so on, to be consistent with other Monero code that also uses base 2 units
+    // 1000, 1000*1000 and so on, to be consistent with other Motif code that also uses base 2 units
     struct byte_map
     {
         const char* const format;
