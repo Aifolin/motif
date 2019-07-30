@@ -1,4 +1,4 @@
-// Copyright (c) 2019, The Monero Project
+// Copyright (c) 2019, The Motif Project
 // 
 // All rights reserved.
 // 
@@ -33,8 +33,8 @@
 #include "blockchain.h"
 #include "tx_sanity_check.h"
 
-#undef MONERO_DEFAULT_LOG_CATEGORY
-#define MONERO_DEFAULT_LOG_CATEGORY "verify"
+#undef MOTIF_DEFAULT_LOG_CATEGORY
+#define MOTIF_DEFAULT_LOG_CATEGORY "verify"
 
 namespace cryptonote
 {
@@ -72,7 +72,7 @@ bool tx_sanity_check(Blockchain &blockchain, const cryptonote::blobdata &tx_blob
 
   if (n_indices <= 10)
   {
-    MERROR("n_indices is only " << n_indices);
+    MDEBUG("n_indices is only " << n_indices << ", not checking");
     return true;
   }
 

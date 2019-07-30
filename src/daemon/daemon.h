@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2019, The Monero Project
+// Copyright (c) 2014-2019, The Motif Project
 // 
 // All rights reserved.
 // 
@@ -29,8 +29,8 @@
 #pragma once
 #include <boost/program_options.hpp>
 
-#undef MONERO_DEFAULT_LOG_CATEGORY
-#define MONERO_DEFAULT_LOG_CATEGORY "daemon"
+#undef MOTIF_DEFAULT_LOG_CATEGORY
+#define MOTIF_DEFAULT_LOG_CATEGORY "daemon"
 
 namespace daemonize {
 
@@ -46,6 +46,7 @@ private:
   uint16_t public_rpc_port;
   std::string zmq_rpc_bind_address;
   std::string zmq_rpc_bind_port;
+  bool zmq_rpc_disabled;
 public:
   t_daemon(
       boost::program_options::variables_map const & vm,

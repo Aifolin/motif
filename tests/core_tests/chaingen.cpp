@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2019, The Monero Project
+// Copyright (c) 2014-2019, The Motif Project
 // 
 // All rights reserved.
 // 
@@ -546,6 +546,7 @@ void block_tracker::global_indices(const cryptonote::transaction *tx, std::vecto
 void block_tracker::get_fake_outs(size_t num_outs, uint64_t amount, uint64_t global_index, uint64_t cur_height, std::vector<get_outs_entry> &outs){
   auto & vct = m_outs[amount];
   const size_t n_outs = vct.size();
+  CHECK_AND_ASSERT_THROW_MES(n_outs > 0, "n_outs is 0");
 
   std::set<size_t> used;
   std::vector<size_t> choices;
@@ -594,7 +595,7 @@ std::string block_tracker::dump_data()
 
       ss << "    idx: " << oi.idx
       << ", rct: " << oi.rct
-      << ", xmr: " << oi.amount
+      << ", mtf: " << oi.amount
       << ", key: " << dump_keys(out.key.data)
       << ", msk: " << dump_keys(oi.comm.bytes)
       << ", txid: " << dump_keys(oi.p_tx->hash.data)

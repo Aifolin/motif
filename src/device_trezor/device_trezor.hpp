@@ -1,4 +1,4 @@
-// Copyright (c) 2017-2019, The Monero Project
+// Copyright (c) 2017-2019, The Motif Project
 //
 // All rights reserved.
 //
@@ -27,8 +27,8 @@
 // THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#ifndef MONERO_DEVICE_TREZOR_H
-#define MONERO_DEVICE_TREZOR_H
+#ifndef MOTIF_DEVICE_TREZOR_H
+#define MOTIF_DEVICE_TREZOR_H
 
 #include "trezor.hpp"
 #include "device/device.hpp"
@@ -68,7 +68,7 @@ namespace trezor {
       size_t m_num_transations_to_sign;
 
       void transaction_versions_check(const ::tools::wallet2::unsigned_tx_set & unsigned_tx, hw::tx_aux_data & aux_data);
-      void transaction_pre_check(std::shared_ptr<messages::monero::MoneroTransactionInitRequest> init_msg);
+      void transaction_pre_check(std::shared_ptr<messages::motif::MotifTransactionInitRequest> init_msg);
       void transaction_check(const protocol::tx::TData & tdata, const hw::tx_aux_data & aux_data);
       void device_state_reset_unsafe() override;
       void live_refresh_start_unsafe();
@@ -110,6 +110,7 @@ namespace trezor {
       /* ======================================================================= */
       bool  get_public_address(cryptonote::account_public_address &pubkey) override;
       bool  get_secret_keys(crypto::secret_key &viewkey , crypto::secret_key &spendkey) override;
+      void  display_address(const cryptonote::subaddress_index& index, const boost::optional<crypto::hash8> &payment_id) override;
 
       /* ======================================================================= */
       /*                              TREZOR PROTOCOL                            */
@@ -118,14 +119,17 @@ namespace trezor {
       /**
        * Get address. Throws.
        */
-      std::shared_ptr<messages::monero::MoneroAddress> get_address(
+      std::shared_ptr<messages::motif::MotifAddress> get_address(
+          const boost::optional<cryptonote::subaddress_index> & subaddress = boost::none,
+          const boost::optional<crypto::hash8> & payment_id = boost::none,
+          bool show_address = false,
           const boost::optional<std::vector<uint32_t>> & path = boost::none,
           const boost::optional<cryptonote::network_type> & network_type = boost::none);
 
       /**
        * Get watch key from device. Throws.
        */
-      std::shared_ptr<messages::monero::MoneroWatchKey> get_view_key(
+      std::shared_ptr<messages::motif::MotifWatchKey> get_view_key(
           const boost::optional<std::vector<uint32_t>> & path = boost::none,
           const boost::optional<cryptonote::network_type> & network_type = boost::none);
 
@@ -206,4 +210,4 @@ namespace trezor {
 
 }
 }
-#endif //MONERO_DEVICE_TREZOR_H
+#endif //MOTIF_DEVICE_TREZOR_H

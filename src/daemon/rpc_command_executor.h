@@ -6,7 +6,7 @@
 
 */
 
-// Copyright (c) 2014-2019, The Monero Project
+// Copyright (c) 2014-2019, The Motif Project
 // 
 // All rights reserved.
 // 
@@ -46,8 +46,8 @@
 #include "net/net_fwd.h"
 #include "rpc/core_rpc_server.h"
 
-#undef MONERO_DEFAULT_LOG_CATEGORY
-#define MONERO_DEFAULT_LOG_CATEGORY "daemon"
+#undef MOTIF_DEFAULT_LOG_CATEGORY
+#define MOTIF_DEFAULT_LOG_CATEGORY "daemon"
 
 namespace daemonize {
 
@@ -125,21 +125,19 @@ public:
 
   bool set_limit(int64_t limit_down, int64_t limit_up);
 
-  bool out_peers(uint64_t limit);
+  bool out_peers(bool set, uint32_t limit);
 
-  bool in_peers(uint64_t limit);
+  bool in_peers(bool set, uint32_t limit);
 
-  bool start_save_graph();
-  
-  bool stop_save_graph();
-  
   bool hard_fork_info(uint8_t version);
 
   bool print_bans();
 
-  bool ban(const std::string &ip, time_t seconds);
+  bool ban(const std::string &address, time_t seconds);
 
-  bool unban(const std::string &ip);
+  bool unban(const std::string &address);
+
+  bool banned(const std::string &address);
 
   bool flush_txpool(const std::string &txid);
 

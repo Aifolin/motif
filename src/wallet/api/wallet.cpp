@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2019, The Monero Project
+// Copyright (c) 2014-2019, The Motif Project
 //
 // All rights reserved.
 //
@@ -53,10 +53,10 @@
 using namespace std;
 using namespace cryptonote;
 
-#undef MONERO_DEFAULT_LOG_CATEGORY
-#define MONERO_DEFAULT_LOG_CATEGORY "WalletAPI"
+#undef MOTIF_DEFAULT_LOG_CATEGORY
+#define MOTIF_DEFAULT_LOG_CATEGORY "WalletAPI"
 
-namespace Monero {
+namespace Motif {
 
 namespace {
     // copy-pasted from simplewallet
@@ -72,7 +72,7 @@ namespace {
     std::string get_default_ringdb_path(cryptonote::network_type nettype)
     {
       boost::filesystem::path dir = tools::get_default_data_dir();
-      // remove .bitmonero, replace with .shared-ringdb
+      // remove .bitmotif, replace with .shared-ringdb
       dir = dir.remove_filename();
       dir /= ".shared-ringdb";
       if (nettype == cryptonote::TESTNET)
@@ -399,19 +399,19 @@ void Wallet::init(const char *argv0, const char *default_log_base_name, const st
 }
 
 void Wallet::debug(const std::string &category, const std::string &str) {
-    MCDEBUG(category.empty() ? MONERO_DEFAULT_LOG_CATEGORY : category.c_str(), str);
+    MCDEBUG(category.empty() ? MOTIF_DEFAULT_LOG_CATEGORY : category.c_str(), str);
 }
 
 void Wallet::info(const std::string &category, const std::string &str) {
-    MCINFO(category.empty() ? MONERO_DEFAULT_LOG_CATEGORY : category.c_str(), str);
+    MCINFO(category.empty() ? MOTIF_DEFAULT_LOG_CATEGORY : category.c_str(), str);
 }
 
 void Wallet::warning(const std::string &category, const std::string &str) {
-    MCWARNING(category.empty() ? MONERO_DEFAULT_LOG_CATEGORY : category.c_str(), str);
+    MCWARNING(category.empty() ? MOTIF_DEFAULT_LOG_CATEGORY : category.c_str(), str);
 }
 
 void Wallet::error(const std::string &category, const std::string &str) {
-    MCERROR(category.empty() ? MONERO_DEFAULT_LOG_CATEGORY : category.c_str(), str);
+    MCERROR(category.empty() ? MOTIF_DEFAULT_LOG_CATEGORY : category.c_str(), str);
 }
 
 ///////////////////////// WalletImpl implementation ////////////////////////
@@ -1697,6 +1697,17 @@ void WalletImpl::setDefaultMixin(uint32_t arg)
     m_wallet->default_mixin(arg);
 }
 
+bool WalletImpl::setCacheAttribute(const std::string &key, const std::string &val)
+{
+    m_wallet->set_attribute(key, val);
+    return true;
+}
+
+std::string WalletImpl::getCacheAttribute(const std::string &key) const
+{
+    return m_wallet->get_attribute(key);
+}
+
 bool WalletImpl::setUserNote(const std::string &txid, const std::string &note)
 {
     cryptonote::blobdata txid_data;
@@ -2419,6 +2430,23 @@ uint64_t WalletImpl::coldKeyImageSync(uint64_t &spent, uint64_t &unspent)
 {
     return m_wallet->cold_key_image_sync(spent, unspent);
 }
+
+void WalletImpl::deviceShowAddress(uint32_t accountIndex, uint32_t addressIndex, const std::string &paymentId)
+{
+    boost::optional<crypto::hash8> payment_id_param = boost::none;
+    if (!paymentId.empty())
+    {
+        crypto::hash8 payment_id;
+        bool res = tools::wallet2::parse_short_payment_id(paymentId, payment_id);
+        if (!res)
+        {
+            throw runtime_error("Invalid payment ID");
+        }
+        payment_id_param = payment_id;
+    }
+
+    m_wallet->device_show_address(accountIndex, addressIndex, payment_id_param);
+}
 } // namespace
 
-namespace Bitmonero = Monero;
+namespace Bitmotif = Motif;

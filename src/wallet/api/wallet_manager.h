@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2019, The Monero Project
+// Copyright (c) 2014-2019, The Motif Project
 //
 // All rights reserved.
 //
@@ -33,7 +33,7 @@
 #include "net/http_client.h"
 #include <string>
 
-namespace Monero {
+namespace Motif {
 
 class WalletManagerImpl : public WalletManager
 {
@@ -95,11 +95,10 @@ public:
 private:
     WalletManagerImpl() {}
     friend struct WalletManagerFactory;
-    std::string m_daemonAddress;
     epee::net_utils::http::http_simple_client m_http_client;
     std::string m_errorString;
 };
 
 } // namespace
 
-namespace Bitmonero = Monero;
+namespace Bitmotif = Motif;

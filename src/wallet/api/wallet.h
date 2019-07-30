@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2019, The Monero Project
+// Copyright (c) 2014-2019, The Motif Project
 //
 // All rights reserved.
 //
@@ -40,7 +40,7 @@
 #include <boost/thread/condition_variable.hpp>
 
 
-namespace Monero {
+namespace Motif {
 class TransactionHistoryImpl;
 class PendingTransactionImpl;
 class UnsignedTransactionImpl;
@@ -168,6 +168,10 @@ public:
     virtual void setListener(WalletListener * l) override;
     virtual uint32_t defaultMixin() const override;
     virtual void setDefaultMixin(uint32_t arg) override;
+
+    virtual bool setCacheAttribute(const std::string &key, const std::string &val) override;
+    virtual std::string getCacheAttribute(const std::string &key) const override;
+
     virtual bool setUserNote(const std::string &txid, const std::string &note) override;
     virtual std::string getUserNote(const std::string &txid) const override;
     virtual std::string getTxKey(const std::string &txid) const override;
@@ -201,6 +205,7 @@ public:
     virtual bool unlockKeysFile() override;
     virtual bool isKeysFileLocked() override;
     virtual uint64_t coldKeyImageSync(uint64_t &spent, uint64_t &unspent) override;
+    virtual void deviceShowAddress(uint32_t accountIndex, uint32_t addressIndex, const std::string &paymentId) override;
 
 private:
     void clearStatus() const;
@@ -262,7 +267,7 @@ private:
 
 } // namespace
 
-namespace Bitmonero = Monero;
+namespace Bitmotif = Motif;
 
 #endif
 

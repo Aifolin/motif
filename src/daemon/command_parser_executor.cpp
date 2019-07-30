@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2019, The Monero Project
+// Copyright (c) 2014-2019, The Motif Project
 // 
 // All rights reserved.
 // 
@@ -31,8 +31,8 @@
 #include "version.h"
 #include "daemon/command_parser_executor.h"
 
-#undef MONERO_DEFAULT_LOG_CATEGORY
-#define MONERO_DEFAULT_LOG_CATEGORY "daemon"
+#undef MOTIF_DEFAULT_LOG_CATEGORY
+#define MOTIF_DEFAULT_LOG_CATEGORY "daemon"
 
 namespace daemonize {
 
@@ -494,11 +494,14 @@ bool t_command_parser_executor::set_limit_down(const std::vector<std::string>& a
 
 bool t_command_parser_executor::out_peers(const std::vector<std::string>& args)
 {
-	if (args.empty()) return false;
-	
-	unsigned int limit;
+	bool set = false;
+	uint32_t limit = 0;
 	try {
-		limit = std::stoi(args[0]);
+		if (!args.empty())
+		{
+			limit = std::stoi(args[0]);
+			set = true;
+		}
 	}
 	  
 	catch(const std::exception& ex) {
@@ -506,16 +509,19 @@ bool t_command_parser_executor::out_peers(const std::vector<std::string>& args)
 		return false;
 	}
 	
-	return m_executor.out_peers(limit);
+	return m_executor.out_peers(set, limit);
 }
 
 bool t_command_parser_executor::in_peers(const std::vector<std::string>& args)
 {
-	if (args.empty()) return false;
-
-	unsigned int limit;
+	bool set = false;
+	uint32_t limit = 0;
 	try {
-		limit = std::stoi(args[0]);
+		if (!args.empty())
+		{
+			limit = std::stoi(args[0]);
+			set = true;
+		}
 	}
 
 	catch(const std::exception& ex) {
@@ -523,19 +529,7 @@ bool t_command_parser_executor::in_peers(const std::vector<std::string>& args)
 		return false;
 	}
 
-	return m_executor.in_peers(limit);
-}
-
-bool t_command_parser_executor::start_save_graph(const std::vector<std::string>& args)
-{
-	if (!args.empty()) return false;
-	return m_executor.start_save_graph();
-}
-
-bool t_command_parser_executor::stop_save_graph(const std::vector<std::string>& args)
-{
-	if (!args.empty()) return false;
-	return m_executor.stop_save_graph();
+	return m_executor.in_peers(set, limit);
 }
 
 bool t_command_parser_executor::hard_fork_info(const std::vector<std::string>& args)
@@ -594,6 +588,13 @@ bool t_command_parser_executor::unban(const std::vector<std::string>& args)
   if (args.size() != 1) return false;
   std::string ip = args[0];
   return m_executor.unban(ip);
+}
+
+bool t_command_parser_executor::banned(const std::vector<std::string>& args)
+{
+  if (args.size() != 1) return false;
+  std::string address = args[0];
+  return m_executor.banned(address);
 }
 
 bool t_command_parser_executor::flush_txpool(const std::vector<std::string>& args)
@@ -758,7 +759,7 @@ bool t_command_parser_executor::pop_blocks(const std::vector<std::string>& args)
 
 bool t_command_parser_executor::version(const std::vector<std::string>& args)
 {
-  std::cout << "Monero '" << MONERO_RELEASE_NAME << "' (v" << MONERO_VERSION_FULL << ")" << std::endl;
+  std::cout << "Motif '" << MOTIF_RELEASE_NAME << "' (v" << MOTIF_VERSION_FULL << ")" << std::endl;
   return true;
 }
 
@@ -768,10 +769,10 @@ bool t_command_parser_executor::prune_blockchain(const std::vector<std::string>&
 
   if (args.empty() || args[0] != "confirm")
   {
-    std::cout << "Warning: pruning from within monerod will not shrink the database file size." << std::endl;
+    std::cout << "Warning: pruning from within motifd will not shrink the database file size." << std::endl;
     std::cout << "Instead, parts of the file will be marked as free, so the file will not grow" << std::endl;
     std::cout << "until that newly free space is used up. If you want a smaller file size now," << std::endl;
-    std::cout << "exit monerod and run monero-blockchain-prune (you will temporarily need more" << std::endl;
+    std::cout << "exit motifd and run motif-blockchain-prune (you will temporarily need more" << std::endl;
     std::cout << "disk space for the database conversion though). If you are OK with the database" << std::endl;
     std::cout << "file keeping the same size, re-run this command with the \"confirm\" parameter." << std::endl;
     return true;
