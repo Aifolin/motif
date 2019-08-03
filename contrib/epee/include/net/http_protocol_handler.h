@@ -37,8 +37,8 @@
 #include "http_auth.h"
 #include "http_base.h"
 
-#undef MONERO_DEFAULT_LOG_CATEGORY
-#define MONERO_DEFAULT_LOG_CATEGORY "net.http"
+#undef MOTIF_DEFAULT_LOG_CATEGORY
+#define MOTIF_DEFAULT_LOG_CATEGORY "net.http"
 
 namespace epee
 {
